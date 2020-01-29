@@ -32,12 +32,51 @@ public class Q25_MergeSortedLists {
         return pMergeHead;
     }
 
+    static ListNode<Integer> Merge2(ListNode<Integer> list1,ListNode<Integer> list2){
+        if(list1==null)
+            return list2;
+        else if(list2==null)
+            return list1;
+        ListNode<Integer> mergeHead = null;
+        if(list1.data<list2.data) {
+            mergeHead = list1;
+            list1 = list1.next;
+        }else{
+            mergeHead = list2;
+            list2 = list2.next;
+        }
+        ListNode<Integer> p = mergeHead;
+        while (list1!=null&&list2!=null){
+            if(list1.data<list2.data) {
+                p.next = list1;
+                list1 = list1.next;
+            }else{
+                p.next = list2;
+                list2 = list2.next;
+            }
+            p = p.next;
+        }
+        while (list1!=null){
+            p.next = list1;
+            list1 = list1.next;
+            p = p.next;
+        }
+        while (list2!=null){
+            p.next = list2;
+            list2 = list2.next;
+            p = p.next;
+        }
+        return mergeHead;
+    }
+
+
+
     public static void main(String[] args){
         List<Integer> data1 = Arrays.asList(1,3,5,7,8,9);
         ListNode<Integer> pHead1 = new ListNode<Integer>(data1);
         List<Integer> data2 = Arrays.asList(2,4,6,8,10);
         ListNode<Integer> pHead2 = new ListNode<Integer>(data2);
-        ListNode<Integer> pMergeHead = Merge(pHead1,pHead2);
+        ListNode<Integer> pMergeHead = Merge2(pHead1,pHead2);
         System.out.println(pMergeHead);
 
     }

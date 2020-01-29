@@ -10,20 +10,34 @@ import java.util.Stack;
 // 4、3、5、1、2就不可能是该压栈序列的弹出序列。
 public class Q31_StackPushPopOrder {
 
-    /**
-     * @param pPush 压入顺序
-     * @param pPop 可能的弹出顺序
-     * @return
-     */
-//    static boolean isPopOrder(List<Integer> pPush,List<Integer> pPop){
-//        Stack<Integer> dataStack = new Stack<Integer>();
-//        assert (pPush.size() == pPop.size())&&(pPush.size()>0);
-//        int pushIndex = 0;
-//        for(int i=0;i<pPop.size()&&pushIndex<pPush.size();i++){
-//            while(pushIndex<pPush.size()&&pushIndex<pPush.size()&&pPush.get(pushIndex)!=pPop.get(i)){
-//                dataStack.push(pPush.get(pushIndex++));
-//            }
-//
-//        }
-//    }
+    public static boolean IsPopOrder(int[] pushA,int[] popA){
+        if(pushA.length!=popA.length)
+            return false;
+        Stack<Integer> stack = new Stack<>();
+        int i=0,j=0;
+        for(;i<pushA.length;i++){
+            stack.push(pushA[i]);
+            while (!stack.empty()&&stack.peek()==popA[j]){
+                stack.pop();
+                j++;
+            }
+        }
+        if(j!=popA.length)
+            return false;
+        else
+            return true;
+    }
+
+    public static void Test(int[] pushA,int[] popA,boolean expected){
+        System.out.println(IsPopOrder(pushA,popA)==expected);
+    }
+
+    public static void main(String[] args){
+        Test(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1},true);
+        Test(new int[]{1,2,3,4,5},new int[]{4,3,5,1,2},false);
+        Test(new int[]{1,2,3,4,5},new int[]{3, 5, 4, 2, 1},true);
+        Test(new int[]{1,2,3,4,5},new int[]{3, 5, 4, 1, 2},false);
+        Test(new int[]{1},new int[]{2},false);
+        Test(new int[]{1},new int[]{1},true);
+    }
 }
