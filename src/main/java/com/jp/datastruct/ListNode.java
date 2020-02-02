@@ -6,11 +6,13 @@ import java.util.List;
 
 public class ListNode<T> {
     public T data;
+    public T val;
     public ListNode<T> next;
 
     public ListNode(T data, ListNode<T> next) {
         this.data = data;
         this.next = next;
+        this.val = data;
     }
 
     public T getData() {
@@ -32,6 +34,7 @@ public class ListNode<T> {
     public ListNode(List<T> list){
         assert data!=null && list.size()>=1;
         this.data = list.get(0);
+        this.val = list.get(0);
         ListNode<T> current = this;
         for(int i=1;i<list.size();i++){
             ListNode<T> next = new ListNode<T>(list.get(i),null);

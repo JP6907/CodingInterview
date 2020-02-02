@@ -8,15 +8,29 @@ import com.jp.datastruct.TreeNode;
 
 public class Q54_KthNodeInBST {
     static int index = 0;
-    static TreeNode<Integer> KthNode(TreeNode<Integer> root, int k){
+    static TreeNode<Integer> KthNode(TreeNode<Integer> pRoot, int k){
+        if(pRoot!=null){
+            TreeNode<Integer> result = KthNode(pRoot.lchild,k);
+            if(result!=null)
+                return result;
+            if(++index==k)
+                return pRoot;
+            result = KthNode(pRoot.rchild,k);
+            return result;
+        }
+        return null;
+    }
+
+
+    static TreeNode<Integer> KthNode2(TreeNode<Integer> root, int k){
         if(root!=null){
-            TreeNode<Integer> result = KthNode(root.lchild,k);
+            TreeNode<Integer> result = KthNode2(root.left,k);
             if(result!=null)
                 return result;
             if(++index==k)
                 return root;
-            result = KthNode(root.rchild,k);
-            return result;
+            else
+                return KthNode2(root.right,k);
         }
         return null;
     }

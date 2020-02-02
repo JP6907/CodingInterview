@@ -1,6 +1,5 @@
 package com.jp.question;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 // 面试题38：字符串的排列
 // 题目：输入一个字符串，打印出该字符串中字符的所有排列。例如输入字符串abc，

@@ -18,6 +18,8 @@ public class Q58_02_LeftRotateString {
     }
 
     static String LeftRotateString(String str,int n){
+        if(n>str.length())
+            return "";
         assert n>=0 && n<str.length();
         StringBuilder sb = new StringBuilder(str);
         reverse(sb,0,n-1);
@@ -29,6 +31,9 @@ public class Q58_02_LeftRotateString {
     public static void main(String[] args){
         String str = "abcdefg";
         System.out.println(LeftRotateString(str,2));
+        System.out.println("==");
+        System.out.println(LeftRotateString(new String(),6));
+        System.out.println("==");
     }
 
 }

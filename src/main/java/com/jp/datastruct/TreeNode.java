@@ -5,16 +5,28 @@ public class TreeNode<T> {
     public TreeNode lchild;
     public TreeNode rchild;
 
+    public T val;
+    public TreeNode left;
+    public TreeNode right;
+
     public TreeNode(T key) {
         this.key = key;
         this.lchild = null;
         this.rchild = null;
+
+        this.val = key;
+        this.left = null;
+        this.right = null;
     }
 
     public TreeNode(T key,T left,T right) {
         this.key = key;
         this.lchild = new TreeNode(left);
         this.rchild = new TreeNode(right);
+
+        this.val = key;
+        this.left = new TreeNode(left);
+        this.right = new TreeNode(right);
     }
 
     public TreeNode(T key, TreeNode<T> lchild, TreeNode<T> rchild) {
@@ -22,6 +34,10 @@ public class TreeNode<T> {
         this.key = key;
         this.lchild = lchild;
         this.rchild = rchild;
+
+        this.val = key;
+        this.left = lchild;
+        this.right = rchild;
     }
 
 
@@ -72,6 +88,24 @@ public class TreeNode<T> {
         System.out.println();
     }
 
+    public static void PrintTreeNode2(TreeNode root){
+        if(root!=null){
+            System.out.format("value of this node is: %d\n", root.key);
+            if(root.left != null)
+                System.out.format("value of its left child is: %d.\n", root.left.key);
+            else
+                System.out.format("left child is nullptr.\n");
+
+            if(root.right != null)
+                System.out.format("value of its right child is: %d.\n", root.right.key);
+            else
+                System.out.format("right child is nullptr.\n");
+        }else{
+            System.out.format("this node is nullptr.\n");
+        }
+        System.out.println();
+    }
+
     public static void  PrintTree(TreeNode root){
         PrintTreeNode(root);
         if(root!=null){
@@ -81,6 +115,17 @@ public class TreeNode<T> {
                 PrintTree(root.rchild);
         }
     }
+
+    public static void  PrintTree2(TreeNode root){
+        PrintTreeNode2(root);
+        if(root!=null){
+            if(root.left!=null)
+                PrintTree2(root.left);
+            if(root.right!=null)
+                PrintTree2(root.right);
+        }
+    }
+
 
     public static void main(String[] args){
         TreeNode<Integer> node123 = new TreeNode<>(1,2,3);

@@ -60,6 +60,54 @@ public class Q12_StringPathInMatrix {
         }
     }
 
+    //回溯法
+    public static boolean hasPath(char[] matrix, int rows, int cols, char[] str){
+        boolean[] isVisited = new boolean[rows*cols];
+        for(int i=0;i<isVisited.length;i++)
+            isVisited[i] = false;
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(hasPathCore(matrix,rows,cols,i,j,str,0,isVisited))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param matrix
+     * @param rows
+     * @param cols
+     * @param row 当前行号
+     * @param col 当前列号
+     * @param str
+     * @param index 当前在str中的位置
+     * @param isVisited
+     * @return
+     */
+    public static boolean hasPathCore(char[] matrix,int rows,int cols,int row,int col,char[] str,int index,boolean[] isVisited){
+        if(index==str.length)
+            return true;
+        if(row<rows && row>=0
+                && col<cols && col>=0 && isVisited[row*cols+col]!=true){
+            if(matrix[row*cols+col]!=str[index]){
+                return false;
+            }else {
+                isVisited[row * cols + col] = true;
+                boolean result =  hasPathCore(matrix,rows,cols,row+1,col,str,index+1,isVisited)
+                            || hasPathCore(matrix,rows,cols,row-1,col,str,index+1,isVisited)
+                            || hasPathCore(matrix,rows,cols,row,col+1,str,index+1,isVisited)
+                            || hasPathCore(matrix,rows,cols,row,col-1,str,index+1,isVisited);
+                if(!result) //清除脚印
+                    isVisited[row*cols+col] = false;
+                return result;
+            }
+        }else{
+            return false;
+        }
+    }
+
     public static void main(String[] args){
         char[][] matrix = {{'a','b','t','g'},
                             {'c','f','c','s'},
@@ -67,5 +115,18 @@ public class Q12_StringPathInMatrix {
         System.out.println(hasPath(matrix,3,4,"abfd"));
         System.out.println(hasPath(matrix,3,4,"abfe"));
         System.out.println(hasPath(matrix,3,4,"bbbb"));
+
+        System.out.println("======");
+        char[] path = new char[]{'a','b','t','g',
+                                 'c','f','c','s',
+                                 'j','d','e','h'};
+        System.out.println(hasPath(path,3,4,"abfd".toCharArray()));
+        System.out.println(hasPath(path,3,4,"abfe".toCharArray()));
+        System.out.println(hasPath(path,3,4,"bbbb".toCharArray()));
+
+        //ABCE
+        //SFCS
+        //ADEE
+        System.out.println(hasPath("ABCESFCSADEE".toCharArray(),3,4,"SEE".toCharArray()));
     }
 }

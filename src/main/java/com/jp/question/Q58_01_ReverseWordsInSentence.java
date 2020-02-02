@@ -27,9 +27,12 @@ public class Q58_01_ReverseWordsInSentence {
             if (sb.charAt(begin)==' '&&begin<str.length()){
                 begin++;
                 end++;
-            }else if(sb.charAt(end)==' '||end==str.length()-1){
+            }else if(sb.charAt(end)==' '){
                 reverse(sb,begin,end-1);
                 begin = ++end;
+            }else if(end==str.length()-1){
+                reverse(sb,begin,end);
+                break;
             }else{
                 end++;
             }
@@ -40,6 +43,7 @@ public class Q58_01_ReverseWordsInSentence {
     public static void main(String[] args){
         String str = "I am a student.";
         System.out.println(reverseSentence(str));
+        System.out.println(reverseSentence("Wonderful"));
     }
 
 }
