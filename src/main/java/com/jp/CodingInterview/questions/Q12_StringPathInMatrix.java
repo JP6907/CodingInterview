@@ -11,6 +11,8 @@ package com.jp.CodingInterview.questions;
 // C F C S
 // J D E H
 
+import java.util.Arrays;
+
 public class Q12_StringPathInMatrix {
 
     static boolean hasPath(char[][] matrix,int rows,int cols,String str){
@@ -113,6 +115,9 @@ public class Q12_StringPathInMatrix {
         System.out.println(hasPath(matrix,3,4,"abfd"));
         System.out.println(hasPath(matrix,3,4,"abfe"));
         System.out.println(hasPath(matrix,3,4,"bbbb"));
+        System.out.println(exist(matrix,"abfd"));
+        System.out.println(exist(matrix,"abfe"));
+        System.out.println(exist(matrix,"bbbb"));
 
         System.out.println("======");
         char[] path = new char[]{'a','b','t','g',
@@ -126,5 +131,59 @@ public class Q12_StringPathInMatrix {
         //SFCS
         //ADEE
         System.out.println(hasPath("ABCESFCSADEE".toCharArray(),3,4,"SEE".toCharArray()));
+    }
+
+
+    public static boolean exist(char[][] board, String word) {
+        int rows = board.length;
+        if(rows==0)
+            return false;
+        int cols = board[0].length;
+        boolean[][] flag = new boolean[rows][cols];
+        for(int i=0;i<rows;i++){
+            Arrays.fill(flag[i], false);
+        }
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(existHelper(board, rows, cols, word, 0, i, j, flag))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    static int[] dx = new int[]{1, -1, 0, 0};
+    static int[] dy = new int[]{0, 0, 1, -1};
+
+    public static boolean existHelper(char[][] board, int rows, int cols, String word, int index, int row, int col, boolean[][] flag){
+        if(index==word.length()){
+            return true;
+        }else if(row<0 || row>=rows || col<0 || col>=cols){
+            return false;
+        }else if(flag[row][col] || board[row][col]!=word.charAt(index)){
+            return false;
+        }else {
+            flag[row][col] = true;
+            boolean result = false;
+            for(int i=0;i<4;i++){
+                if(existHelper(board, rows, cols, word, index+1, row+dx[i], col+dy[i], flag)){
+                    result = true;
+                    break;
+                }
+            }
+
+//            flag[row][col] = true;
+//            boolean result = existHelper(board, rows, cols, word, index+1, row+1, col, flag)
+//                        || existHelper(board, rows, cols, word, index+1, row-1, col, flag)
+//                        || existHelper(board, rows, cols, word, index+1, row, col+1, flag)
+//                        || existHelper(board, rows, cols, word, index+1, row, col-1, flag);
+            if(result) {
+                return true;
+            }else {
+                flag[row][col] = false;
+                return false;
+            }
+        }
+
     }
 }

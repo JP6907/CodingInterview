@@ -85,4 +85,18 @@ public class Q23_EntryNodeInListLoop {
         ListNode<Integer> entryNodeOfLoop = EntryNodeIfLoop(pHead);
         System.out.println(entryNodeOfLoop.data);
     }
+
+    public boolean hasCycle3(ListNode head) {
+        //判断是否存在环
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast!=null&&fast.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast==slow)
+                return true;
+        }
+        return false;
+        //寻找环入口
+    }
 }

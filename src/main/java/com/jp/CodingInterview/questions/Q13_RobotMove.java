@@ -7,6 +7,8 @@ package com.jp.CodingInterview.questions;
 // 大于k的格子。例如，当k为18时，机器人能够进入方格(35, 37)，因为3+5+3+7=18。
 // 但它不能进入方格(35, 38)，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
 
+import java.util.Arrays;
+
 public class Q13_RobotMove {
 
     // 回溯法
@@ -49,6 +51,7 @@ public class Q13_RobotMove {
 
     public static void Test(int threshold, int rows, int cols,int expected){
         System.out.println(movingCount(threshold,rows,cols)==expected);
+        System.out.println(movingCount2(rows,cols,threshold)==expected);
     }
 
     public static void main(String[] args){
@@ -62,5 +65,49 @@ public class Q13_RobotMove {
         Test(0, 1, 1, 1);
         Test(-10, 10, 10, 0);
 
+    }
+
+    public static int movingCount2(int m, int n, int k) {
+        if(m<=0 || n<=0 || k<0)
+            return 0;
+        boolean[][] flag = new boolean[m][n];
+        for(int i=0;i<m;i++){
+            Arrays.fill(flag[i], false);
+        }
+        return movingCountCore2(m, n, k, 0, 0, flag);
+    }
+
+    static int[] dx = new int[]{0, 0, 1, -1};
+    static int[] dy = new int[]{1, -1, 0, 0};
+    public static int movingCountCore2(int rows,int cols,int k, int row, int col, boolean[][] flag){
+        if(row<0 || row>=rows || col<0 || col>=cols || flag[row][col]){
+            return 0;
+        }
+        if(!check(row,col,k)){
+            return 0;
+        }
+        flag[row][col] = true;
+        int count = 1;
+        for(int i=0;i<4;i++){
+            count += movingCountCore2(rows, cols, k, row+dx[i], col+dy[i], flag);
+        }
+        return count;
+    }
+
+    public static boolean check(int row,int col,int threadshold){
+        if(getDigitSum(row)+getDigitSum(col)<=threadshold) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public static int getDigitSum(int number){
+        int sum = 0;
+        while (number>0){
+            sum += number%10;
+            number /= 10;
+        }
+        return sum;
     }
 }

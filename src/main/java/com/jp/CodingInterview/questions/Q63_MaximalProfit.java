@@ -29,16 +29,33 @@ public class Q63_MaximalProfit {
         return maxDiff;
     }
 
-    static boolean Test(int[] numbers,int expected){
-        return MaxDiff(numbers)==expected;
+    static void Test(int[] numbers,int expected){
+        System.out.println(MaxDiff(numbers)==expected);
+        System.out.println(maxProfit(numbers)==expected);
     }
 
     public static void main(String[] args){
-        System.out.println(Test(new int[]{4, 1, 3, 2, 5},4));
-        System.out.println(Test(new int[]{1, 2, 4, 7, 11, 16 },15));
-        System.out.println(Test(new int[]{16, 11, 7, 4, 2, 1},-1));
-        System.out.println(Test(new int[]{16, 16, 16, 16, 16},0));
-        System.out.println(Test(new int[]{9, 11, 5, 7, 16, 1, 4, 2 },11));
+        Test(new int[]{4, 1, 3, 2, 5},4);
+        Test(new int[]{1, 2, 4, 7, 11, 16 },15);
+        Test(new int[]{16, 11, 7, 4, 2, 1},-1);
+        Test(new int[]{16, 16, 16, 16, 16},0);
+        Test(new int[]{9, 11, 5, 7, 16, 1, 4, 2 },11);
+    }
+
+    public static int maxProfit(int[] prices) {
+        //dp[i][0]:第i天，没有持有股票的利润
+        //dp[i][1]:第i天，持有股票的利润
+        //只能买卖一次股票，则dp[i][1]=-price[i]
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for(int i=1;i<n;i++){
+            //如果股票价格一直下跌，则dp[i][0]会一直保持为0，即没有进行买卖
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1]+prices[i]);
+            dp[i][1] = Math.max(-prices[i], dp[i-1][1]);
+        }
+        return dp[n-1][0];
     }
 
 }

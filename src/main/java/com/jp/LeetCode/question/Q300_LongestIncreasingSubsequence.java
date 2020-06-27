@@ -13,6 +13,9 @@ package com.jp.LeetCode.question;
 //Your algorithm should run in O(n2) complexity.
 //Follow up: Could you improve it to O(n log n) time complexity?
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 //可以非连续
 //动态规划
 //f[i]=max(f[j])+1 (1<=j<iandxj<xi)
@@ -40,9 +43,30 @@ public class Q300_LongestIncreasingSubsequence {
 
     public static void test(int[] nums,int expected){
         System.out.println(lengthOfLIS(nums)==expected);
+        System.out.println(lengthOfLIS2(nums)==expected);
     }
 
     public static void main(String[] args) {
         test(new int[]{10,9,2,5,3,7,101,18},4);
+    }
+
+
+    public static int lengthOfLIS2(int[] nums) {
+        int len = nums.length;
+        if(len == 0){
+            return 0;
+        }
+        int[] dp = new int[len];
+        int result = 1;
+        Arrays.fill(dp, 1);
+        for(int i=1;i<len;i++){
+            for(int j=0;j<i;j++){
+                if(nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j]+1);
+                }
+            }
+            result = Math.max(result, dp[i]);
+        }
+        return result;
     }
 }

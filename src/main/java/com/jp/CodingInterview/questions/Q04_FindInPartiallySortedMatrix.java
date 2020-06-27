@@ -24,6 +24,7 @@ public class Q04_FindInPartiallySortedMatrix {
         return false;
     }
 
+
     public static void main(String[] args){
         //  1   2   8   9
         //  2   4   9   12
@@ -44,5 +45,25 @@ public class Q04_FindInPartiallySortedMatrix {
 
         System.out.println(Find(new int[][] {{1, 2, 8, 9}, {2, 4, 9, 12}, {4, 7, 10, 13}, {6, 8, 11, 15}},
                 0));
+    }
+
+
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        int rows = matrix.length;
+        if(rows==0)
+            return false;
+        int cols = matrix[0].length;
+        int row = 0, col = cols-1;
+        while (row<rows && col>=0){
+            int diff = matrix[row][col] - target;
+            if(diff > 0){
+                col--;
+            }else if(diff < 0){
+                row++;
+            }else {
+                return true;
+            }
+        }
+        return false;
     }
 }

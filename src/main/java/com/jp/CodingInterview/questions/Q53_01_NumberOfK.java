@@ -58,6 +58,71 @@ public class Q53_01_NumberOfK {
         assert getNumberOfK(data,4)==1;
         assert getNumberOfK(data,5)==3;
         assert getNumberOfK(data,6)==1;
+
+        System.out.println(getLeftK(new int[]{2,2,3,4,5},1)==-1);
+        System.out.println(getLeftK(new int[]{2,2,3,4,5},2)==0);
+        System.out.println(getLeftK(new int[]{2,2,3,4,5},4)==3);
+        System.out.println(getRightK(new int[]{2,2,3,4,5},6)==-1);
+        System.out.println(getRightK(new int[]{2,2,3,4,5},2)==1);
+
+        test2(new int[]{5,7,7,8,8,10},8,2);
+        test2(new int[]{5,7,7,8,8,10},6,0);
+    }
+
+    public static void test2(int[] nums, int target, int expected){
+       System.out.println(search2(nums, target)==expected);
+    }
+
+    public static int search2(int[] nums, int target) {
+       int left = getLeftK(nums,target);
+       int right = getRightK(nums, target);
+       if(left==-1 || right==-1) {
+           return 0;
+       }else {
+           return right-left+1;
+       }
+
+    }
+
+    //不存在则返回-1
+    public static int getLeftK(int[] nums,int target){
+       int left = 0;
+       int right = nums.length-1;
+       while (left<=right){
+           int mid = left + (right-left)/2;
+           if(nums[mid]==target){
+               if(mid==0||nums[mid-1]!=target){
+                   return mid;
+               }else {
+                   right = mid-1;
+               }
+           }else if(nums[mid]>target){
+               right = mid-1;
+           }else if(nums[mid]<target){
+               left = mid+1;
+           }
+       }
+       return -1;
+    }
+
+    public static int getRightK(int[] nums,int target){
+        int left = 0;
+        int right = nums.length-1;
+        while (left<=right){
+            int mid = left + (right-left)/2;
+            if(nums[mid]==target){
+                if(mid==nums.length-1||nums[mid+1]!=target){
+                    return mid;
+                }else {
+                    left = mid+1;
+                }
+            }else if(nums[mid]>target){
+                right = mid-1;
+            }else if(nums[mid]<target){
+                left = mid+1;
+            }
+        }
+        return -1;
     }
 
 }

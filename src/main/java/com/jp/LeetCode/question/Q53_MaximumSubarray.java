@@ -77,5 +77,55 @@ public class Q53_MaximumSubarray {
     public static void main(String[] args) {
         test(new int[]{-2,1,-3,4,-1,2,1,-5,4},6);
         test2(new int[]{-2,1,-3,4,-1,2,1,-5,4},6);
+        test34(new int[]{-2,1,-3,4,-1,2,1,-5,4},6);
+    }
+
+
+    //动态规划的两种思路，两种状态转移：
+    //第一种：
+    //f(n) 表示前n个数的最大子序和，这种表示方法f(n)和f(n-1)之间没有直接的关系
+    //需要再增加一个状态:f(n)(0)表示前n个数中，不选num[n]的最大子序和，f(n)(1)表示选num[n]，则：
+    //  f(n)(0) = max{f(n-1)(0),f(n-1)(1)}
+    //  f(n)(1) = max{f(n-1)(1)+num[n],num[n]}
+    //初始状态：
+    //  f(0)(0) = Integer.MIN_VALUE
+    //  f(0)(1) = num[0]
+    //结果：
+    //  max{f(n)(0),f((n)(1)}
+    public static int maxSubArray3(int[] nums){
+        int n = nums.length;
+        int[][] f = new int[n][2];
+        f[0][0] = Integer.MIN_VALUE;
+        f[0][1] = nums[0];
+        for(int i=1;i<n;i++){
+            f[i][0] = Math.max(f[i-1][0],f[i-1][1]);
+            f[i][1] = Math.max(f[i-1][1]+nums[i],nums[i]);
+        }
+        return Math.max(f[n-1][0],f[n-1][1]);
+    }
+
+    //第二种思路：
+    //f(n) 表示以n为结尾的最大子序和
+    //  f(n) = max{f(n-1)+num[n],num[n]}
+    //初始状态:
+    //  f(0) = num[0]
+    //结果：
+    //  max(f(i)) i=1,....n
+    public static int maxSubArray4(int[]  nums){
+        int n = nums.length;
+        int[] f = new int[n];
+        f[0] = nums[0];
+        int result = f[0];
+        for(int i=1;i<n;i++){
+            f[i] = Math.max(f[i-1]+nums[i],nums[i]);
+            result = Math.max(result,f[i]);
+        }
+        return result;
+    }
+
+    public static void test34(int[] nums,int expected){
+
+        System.out.println(maxSubArray3(nums)==expected);
+        System.out.println(maxSubArray4(nums)==expected);
     }
 }

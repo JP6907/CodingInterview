@@ -1,7 +1,8 @@
 package com.jp.CodingInterview.questions;
 
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
+import java.util.*;
 
 // 面试题38：字符串的排列
 // 题目：输入一个字符串，打印出该字符串中字符的所有排列。例如输入字符串abc，
@@ -64,6 +65,43 @@ public class Q38_StringPermutation {
         Permutation("abc");
         System.out.println("====");
         System.out.println(Permutation2("abc").toString());
+        System.out.println("====");
+        System.out.println(Arrays.toString(permutation3("abc")));
+        System.out.println("====");
         System.out.println(Permutation2("aa").toString());
+        System.out.println("====");
+        System.out.println(Arrays.toString(permutation3("aa")));
+    }
+
+
+    public static String[] permutation3(String s) {
+        boolean[] flag = new boolean[s.length()];
+        Arrays.fill(flag, false);
+        List<String> result = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        permutationCore3(s, 0, result, new StringBuilder(), flag, set);
+        String[] arrayResult = new String[result.size()];
+        result.toArray(arrayResult);
+        return arrayResult;
+    }
+
+    public static void permutationCore3(String s, int index, List<String> result, StringBuilder sb, boolean[] flag, Set<String> set){
+        if(index==s.length()){
+            String str = sb.toString();
+            if(!set.contains(str)) {
+                result.add(str);
+                set.add(str);
+            }
+        }else {
+            for(int i=0;i<s.length();i++){
+                if(!flag[i]){
+                    flag[i] = true;
+                    sb.append(s.charAt(i));
+                    permutationCore3(s, index+1, result, sb, flag, set);
+                    sb.deleteCharAt(sb.length()-1);
+                    flag[i] = false;
+                }
+            }
+        }
     }
 }

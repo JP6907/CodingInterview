@@ -10,6 +10,7 @@ import com.jp.CodingInterview.datastruct.ListNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class Q06_PrintListInReversedOrder {
 
@@ -28,5 +29,23 @@ public class Q06_PrintListInReversedOrder {
         ListNode<Integer> listNode = new ListNode<>(data);
         ArrayList<Integer> inverseList = printListFromTailToHead(listNode);
         System.out.println(inverseList);
+
+        int[] result = reversePrint(listNode);
+        System.out.println(Arrays.toString(result));
+    }
+
+    public static int[] reversePrint(ListNode<Integer> head){
+        Stack<Integer> stack = new Stack<>();
+        ListNode<Integer> p = head;
+        while (p!=null){
+            stack.push(p.val);
+            p = p.next;
+        }
+        int size = stack.size();
+        int[] result = new int[size];
+        for(int i=0;i<size;i++){
+            result[i] = stack.pop();
+        }
+        return result;
     }
 }

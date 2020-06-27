@@ -23,6 +23,31 @@ import java.util.Map;
 //             Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 public class Q3_LongestSubstringWithoutRepeatingCharacters {
 
+    //滑动窗口
+    public static int lengthOfLongestSubstring2(String s) {
+        if(s.length()<2)
+            return s.length();
+        HashMap<Character,Integer> map = new HashMap<>();
+        int left=0,right=0;
+        int longest = 1;
+        int cur = 0;
+        while (right<s.length()){
+            char c = s.charAt(right);
+            if(!map.containsKey(c)){
+                map.put(c,right);
+                if(++cur>longest){
+                    longest = cur;
+                }
+            }else {//出现过
+                left = map.get(c)+1;
+                cur = right-left+1;
+                map.put(c,left);
+            }
+            right++;
+        }
+        return longest;
+    }
+
     public static int lengthOfLongestSubstring(String s) {
         if(s.length()<2)
             return s.length();
@@ -55,6 +80,8 @@ public class Q3_LongestSubstringWithoutRepeatingCharacters {
 
     public static void Test(String str,int expected){
         System.out.println(lengthOfLongestSubstring(str)==expected);
+        System.out.println(lengthOfLongestSubstring2(str)==expected);
+        System.out.println(lengthOfLongestSubstring3(str)==expected);
     }
 
     public static void main(String[] args) {
@@ -63,4 +90,22 @@ public class Q3_LongestSubstringWithoutRepeatingCharacters {
         Test("pwwkew",3);
         Test("au",2);
     }
+
+    public static int lengthOfLongestSubstring3(String s) {
+        Map<Character, Integer> windows = new HashMap<>();
+        int left = 0, right = 0;
+        int result = 0;
+        while (right < s.length()){
+            char c = s.charAt(right);
+            windows.put(c, windows.getOrDefault(c, 0)+1);
+            right++;
+            while (windows.getOrDefault(c, 0) > 1){
+                char lc = s.charAt(left++);
+                windows.put(lc, windows.get(lc)-1);
+            }
+            result = Math.max(result, right-left);
+        }
+        return result;
+    }
+
 }
