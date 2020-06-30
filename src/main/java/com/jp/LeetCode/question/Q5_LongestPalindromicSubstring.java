@@ -1,5 +1,8 @@
 package com.jp.LeetCode.question;
 
+import javax.swing.*;
+import java.util.Arrays;
+
 //Given a string s, find the longest palindromic substring in s.
 // You may assume that the maximum length of s is 1000.
 //
@@ -118,16 +121,79 @@ public class Q5_LongestPalindromicSubstring {
     }
 
 
-    public static void Test(String s,String expected){
-        System.out.println(longestPalindrome(s).equals(expected));
-        System.out.println(longestPalindrome2(s).equals(expected));
-        System.out.println(longestPalindrome3(s).equals(expected));
+    public static void Test(String s,String expected1,String expected2){
+        System.out.println(longestPalindrome(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println(longestPalindrome2(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println(longestPalindrome3(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println(longestPalindrome4(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println(longestPalindrome5(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println("===");
     }
 
     public static void main(String[] args) {
-        Test("babad","bab");
-        Test("cbbd","bb");
-        Test("abcdasdfghjkldcba","a");
+        Test("babad","aba", "bab");
+        Test("cbbd","bb", "");
+        Test("abcdasdfghjkldcba","a", "");
     }
 
+    //动态规划
+    //dp[i][j]表示 (i,j)是不是回文串
+    //s[i]==s[j] && dp[i+1][j-1]==true ：dp[i][j]=true
+    //s[i]!=s[j] : dp[i][j]=false
+    //依赖于左下角
+    //判断(i,j)时需要保证(i+1,j-1)已经判断了
+    //i降序、j升序
+    public static String longestPalindrome4(String s){
+        int n = s.length();
+        if(n <= 1){
+            return s;
+        }else {
+            boolean[][] dp = new boolean[n][n];
+            for(int i=0;i<n;i++){
+                Arrays.fill(dp[i], false);
+            }
+            for(int i=0;i<n;i++){
+                dp[i][i] = true;
+            }
+            int max = 1;
+            int left = 0, right = 0;
+            for(int i=n-2;i>=0;i--){
+                for(int j=i+1;j<n;j++){
+                    if(s.charAt(i)==s.charAt(j) && (dp[i+1][j-1] || j-i<3)){
+                        dp[i][j] = true;
+                    }
+                    if(dp[i][j] && j-i+1>max){
+                        left = i;
+                        right = j;
+                        max = right-left+1;
+                    }
+                }
+            }
+            return s.substring(left, right+1);
+        }
+    }
+
+    public static String longestPalindrome5(String s){
+        if(s.length()<=1){
+            return s;
+        }
+        String result = "";
+        for(int i=0;i<s.length();i++){
+            String s1 = longestPalindromeCore5(s, i, i);
+            String s2 = longestPalindromeCore5(s, i, i+1);
+            result = result.length()>s1.length()?result:s1;
+            result = result.length()>s2.length()?result:s2;
+        }
+        return result;
+    }
+
+    public static String longestPalindromeCore5(String s, int left, int right){
+        if(left>=0 && right<s.length() && left!=right && s.charAt(left)!=s.charAt(right))
+            return "";
+        while (left>=0 && right<s.length() && s.charAt(left)==s.charAt(right)){
+            left--;
+            right++;
+        }
+        return s.substring(left+1, right);
+    }
 }

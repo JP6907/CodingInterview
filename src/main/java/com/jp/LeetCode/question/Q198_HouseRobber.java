@@ -23,6 +23,8 @@ package com.jp.LeetCode.question;
 //抢劫一排住户，抢劫某住户后，则不能抢劫邻居住户，求能抢劫到的最大金额数量
 //dp[i] = Max(dp[i-1],dp[i-2]+house[i])
 
+import java.util.Arrays;
+
 public class Q198_HouseRobber {
 
     public static int rob(int[] nums) {
@@ -61,6 +63,8 @@ public class Q198_HouseRobber {
     public static void test(int[] nums,int expected){
         System.out.println(rob(nums)==expected);
         System.out.println(rob2(nums)==expected);
+        System.out.println(rob3(nums)==expected);
+        System.out.println(rob4(nums)==expected);
         System.out.println("===");
     }
 
@@ -68,5 +72,50 @@ public class Q198_HouseRobber {
         test(new int[]{1,2,3,1},4);
         test(new int[]{2,7,9,3,1},12);
         test(new int[]{2,1,1,2},4);
+    }
+
+    //递归
+    public static int rob3(int[] nums) {
+        int n = nums.length;
+        if(n <= 0){
+            return 0;
+        }
+        int[] memo = new int[n];
+        Arrays.fill(memo, -1);
+        return robCore3(nums, 0, memo);
+    }
+
+    public static int robCore3(int[] nums, int index, int[] memo) {
+        if(index >= nums.length){
+            return 0;
+        }
+        if(memo[index] != -1){
+            return memo[index];
+        }else {
+            int result = Math.max(robCore3(nums, index+1, memo), nums[index] + robCore3(nums, index+2, memo));
+            memo[index] = result;
+            return result;
+        }
+    }
+
+    //迭代
+    //dp[i] = Max{dp[i+1], nums[i]+dp[i+2]}
+    //反过来也一样
+    //dp[i] = Max{dp[i-1], nums[i]+dp[i-2]}
+    public static int rob4(int[] nums){
+        int n = nums.length;
+        if(n == 1){
+            return nums[0];
+        }else if(n == 2){
+            return Math.max(nums[0], nums[1]);
+        }else {
+            int[] dp = new int[n];
+            dp[0] = nums[0];
+            dp[1] = Math.max(nums[0], nums[1]);
+            for(int i=2;i<n;i++){
+                dp[i] = Math.max(dp[i-1], nums[i]+dp[i-2]);
+            }
+            return dp[n-1];
+        }
     }
 }

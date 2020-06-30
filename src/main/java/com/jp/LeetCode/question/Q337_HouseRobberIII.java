@@ -37,4 +37,26 @@ public class Q337_HouseRobberIII {
         map.put(root,result);
         return result;
     }
+
+    static Map<TreeNode, Integer> memo = new HashMap<>();
+    public static int rob2(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        if(memo.containsKey(root)){
+            return memo.get(root);
+        }else {
+            int robIt = root.val;
+            if(root.left != null){
+                robIt += (rob2(root.left.left) + rob2(root.left.right));
+            }
+            if(root.right != null){
+                robIt += (rob2(root.right.left) + rob2(root.right.right));
+            }
+            int NoRobIt = (rob2(root.left) + rob2(root.right));
+            int result = Math.max(robIt, NoRobIt);
+            memo.put(root, result);
+            return result;
+        }
+    }
 }

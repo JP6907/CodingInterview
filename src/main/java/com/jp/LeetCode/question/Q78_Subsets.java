@@ -50,9 +50,31 @@ public class Q78_Subsets {
         for(List<Integer> l : result){
             System.out.println(Arrays.toString(l.toArray()));
         }
+        System.out.println("--");
+        result = subsets2(nums);
+        for(List<Integer> l : result){
+            System.out.println(Arrays.toString(l.toArray()));
+        }
+        System.out.println("==========");
     }
 
     public static void main(String[] args) {
         test(new int[]{1,2,3});
+    }
+
+
+    public static List<List<Integer>> subsets2(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        subsetsCore2(nums, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    public static void subsetsCore2(int[] nums, int start, List<Integer> track, List<List<Integer>> result) {
+        result.add(new ArrayList<>(track));
+        for(int i=start;i<nums.length;i++){
+            track.add(nums[i]);
+            subsetsCore2(nums, i+1, track, result);
+            track.remove(track.size()-1);
+        }
     }
 }
