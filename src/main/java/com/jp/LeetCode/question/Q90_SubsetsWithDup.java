@@ -12,36 +12,22 @@ import java.util.*;
 public class Q90_SubsetsWithDup {
 
     public static List<List<Integer>> subsetsWithDup(int[] nums) {
-        Set<List<Integer>> set = new TreeSet<>(new Comparator<List<Integer>>() {
-            @Override
-            public int compare(List<Integer> o1, List<Integer> o2) {
-                if(o1.containsAll(o2) && o2.containsAll(o1)){
-                    return 0;
-                }else {
-                    return new Random().nextInt(10)>=5?1:-1;
-                }
-            }
-        });
+        Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<>();
-        subsetsWithDupCore(nums, 0, new ArrayList<>(), result, set);
+        subsetsWithDupCore(nums, 0, new ArrayList<>(), result);
         return result;
     }
 
-    public static void subsetsWithDupCore(int[] nums, int start, List<Integer> track, List<List<Integer>> result, Set<List<Integer>> set) {
-        if(!set.contains(track)) {
-            List<Integer> temp = new ArrayList<>(track);
-            result.add(temp);
-            set.add(temp);
-        }
+    public static void subsetsWithDupCore(int[] nums, int start, List<Integer> track, List<List<Integer>> result) {
+        result.add(new ArrayList<>(track));
         for(int i=start;i<nums.length;i++){
+            if(i>start && nums[i]==nums[i-1]){
+                continue;
+            }
             track.add(nums[i]);
-            subsetsWithDupCore(nums, i+1, track, result, set);
+            subsetsWithDupCore(nums, i+1, track, result);
             track.remove(track.size()-1);
         }
-    }
-
-    public static boolean ListEqual(List<Integer> list1, List<Integer> list2){
-        return list1.containsAll(list2) && list2.containsAll(list1);
     }
 
     public static void test(int[] nums){
