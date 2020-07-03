@@ -2,6 +2,7 @@ package com.jp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class Test {
 
@@ -55,19 +56,37 @@ public class Test {
 
     public static void main(String[] args) {
 
-        double tmp = 1.33;
-        System.out.println(tmp%1);
+        class FutureResult{};
 
-        class Parent{};
-        class Child extends Parent{};
+        FutureResult result = new FutureResult();
 
-        Parent parent = new Parent();
-        Child child = new Child();
-        System.out.println(parent==child);
+        System.out.println(result.hashCode());
+        Future<FutureResult> future = new CompletableFuture<>();
+        Integer timeout = 1500;
+        try {
+            result = future.get(timeout, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result.hashCode());
 
-        parent = child;
-        child = (Child) parent;
-        System.out.println(parent==child);
+//        double tmp = 1.33;
+//        System.out.println(tmp%1);
+//
+//        class Parent{};
+//        class Child extends Parent{};
+//
+//        Parent parent = new Parent();
+//        Child child = new Child();
+//        System.out.println(parent==child);
+//
+//        parent = child;
+//        child = (Child) parent;
+//        System.out.println(parent==child);
 
         //new Test().test();
 //        List<Integer> list = new ArrayList<>();
@@ -78,22 +97,22 @@ public class Test {
 //            if(i%11==7&&i%7==5)
 //                System.out.println(i);
 //        }
-        int a = 43;
-        int b = 65;
-        int c = 19;
-        int m = 76;
-        int k = 746;//方法倍数
-        long A = a*k;
-        long B = b*k;
-        long C = c*k;
-        System.out.println(fun(a,b,c,m));
-        System.out.println(Fun(A,B,C,m,k)/(k*k*k));
-
-        for(int i=1;i<100000;i++){
-            if((28*i)%197==124){
-                System.out.println(i);
-            }
-        }
+//        int a = 43;
+//        int b = 65;
+//        int c = 19;
+//        int m = 76;
+//        int k = 746;//方法倍数
+//        long A = a*k;
+//        long B = b*k;
+//        long C = c*k;
+//        System.out.println(fun(a,b,c,m));
+//        System.out.println(Fun(A,B,C,m,k)/(k*k*k));
+//
+//        for(int i=1;i<100000;i++){
+//            if((28*i)%197==124){
+//                System.out.println(i);
+//            }
+//        }
     }
 
     //f(a,b,c) = (a*b+a+m)*c
