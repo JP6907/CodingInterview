@@ -84,6 +84,7 @@ public class Q875_KokoEatingBananas {
     public static void test(int[] piles,int H,int expected){
         System.out.println(minEatingSpeed(piles,H)==expected);
         System.out.println(minEatingSpeed2(piles,H)==expected);
+        System.out.println(minEatingSpeed3(piles,H)==expected);
         System.out.println("====");
     }
 
@@ -91,5 +92,47 @@ public class Q875_KokoEatingBananas {
         test(new int[]{3,6,7,11},8,4);
         test(new int[]{30,11,23,4,20},5,30);
         test(new int[]{30,11,23,4,20},6,23);
+    }
+
+
+    //二分查找，寻找符合条件的左边界
+    public static int minEatingSpeed3(int[] piles, int H) {
+        int left = 1, right = getMaxSpeed3(piles);
+        while (left < right){
+            int mid = left + (right-left)/2;
+            if(canFinish3(piles, mid, H)){
+                right = mid;
+            }else {
+                left = mid+1;
+            }
+        }
+        return left;
+    }
+
+
+    public static boolean canFinish3(int[] piles, int speed, int maxTime){
+        int time = 0;
+        for(int pile : piles){
+            time += timeOf3(pile, speed);
+        }
+        return time <= maxTime;
+    }
+
+    public static int timeOf3(int pile, int speed){
+        int div = pile/speed;
+        if(pile%speed==0){
+            return div;
+        }else {
+            return div+1;
+        }
+    }
+
+    //每次最多只能吃一堆，速度再高没有意义
+    public static int getMaxSpeed3(int[] piles){
+        int max = 1;
+        for(int pile : piles){
+            max = Math.max(max, pile);
+        }
+        return max;
     }
 }

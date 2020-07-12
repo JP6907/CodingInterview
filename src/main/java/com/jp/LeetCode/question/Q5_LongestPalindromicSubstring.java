@@ -127,13 +127,15 @@ public class Q5_LongestPalindromicSubstring {
         System.out.println(longestPalindrome3(s).equals(expected1) || longestPalindrome(s).equals(expected2));
         System.out.println(longestPalindrome4(s).equals(expected1) || longestPalindrome(s).equals(expected2));
         System.out.println(longestPalindrome5(s).equals(expected1) || longestPalindrome(s).equals(expected2));
+        System.out.println(longestPalindrome6(s).equals(expected1) || longestPalindrome6(s).equals(expected2));
+        System.out.println(longestPalindrome7(s).equals(expected1) || longestPalindrome7(s).equals(expected2));
         System.out.println("===");
     }
 
     public static void main(String[] args) {
         Test("babad","aba", "bab");
         Test("cbbd","bb", "");
-        Test("abcdasdfghjkldcba","a", "");
+        Test("abcdasdfghjkldcba","a", "a");
     }
 
     //动态规划
@@ -195,5 +197,56 @@ public class Q5_LongestPalindromicSubstring {
             right++;
         }
         return s.substring(left+1, right);
+    }
+
+
+    public static String longestPalindrome6(String s) {
+        String result = "";
+        for(int i=0;i<s.length()-1;i++){
+            String str1 = longestPalindromeCore6(s,i, i+1);
+            String str2 = longestPalindromeCore6(s,i, i);
+            result = str1.length() > result.length() ? str1 : result;
+            result = str2.length() > result.length() ? str2 : result;
+        }
+        return result;
+    }
+
+    public static String longestPalindromeCore6(String s, int left, int right) {
+        while (left >=0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+        }
+        return s.substring(left+1, right);
+    }
+
+    //dp[i][j]表示 [i,j]回文字串的长度
+    //dp[i][i] = 1
+    //i <= j
+    //dp[i][j] = dp[i+1][j-1] .....
+    public static String longestPalindrome7(String s) {
+        int n = s.length();
+        if(n == 0){
+            return "";
+        }
+        int[][] dp = new int[n][n];
+        String result = s.substring(0, 1);
+        for(int i=0;i<n;i++){
+            dp[i][i] = 1;
+        }
+        for(int k=1;k<n;k++){
+            for(int i=0;i<n-k;i++){
+                int left = i;
+                int right = i+k;
+                if((right-left+1 <= 3 || dp[left+1][right-1] > 0) && s.charAt(left) == s.charAt(right)){
+                    dp[left][right] = dp[left+1][right-1] + 2;
+                    if(right-left+1 > result.length()){
+                        result = s.substring(left, right+1);
+                    }
+                }else {
+                    dp[left][right] = 0;
+                }
+            }
+        }
+        return result;
     }
 }

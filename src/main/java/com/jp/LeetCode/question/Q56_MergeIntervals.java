@@ -14,9 +14,7 @@ package com.jp.LeetCode.question;
 //Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 //NOTE: input types have been changed on April 15, 2019. Please reset to default code definition to get new method signature.
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Q56_MergeIntervals {
     //先排序，然后依次合并
@@ -49,10 +47,96 @@ public class Q56_MergeIntervals {
         for(int[] r : result){
             System.out.println(Arrays.toString(r));
         }
+        System.out.println("--");
+        result = merge2(intervals);
+        for(int[] r : result){
+            System.out.println(Arrays.toString(r));
+        }
+        System.out.println("--");
+        result = merge3(intervals);
+        for(int[] r : result){
+            System.out.println(Arrays.toString(r));
+        }
+        System.out.println("========");
     }
 
     public static void main(String[] args) {
         test(new int[][]{{1,3},{2,6},{8,10},{15,18}});
+    }
+
+
+    //按start排序
+    public static int[][] merge2(int[][] intervals) {
+        if(intervals.length <= 1)
+            return intervals;
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[0] == o2[0]){
+                    return o1[1] - o2[1];
+                }else {
+                    return o1[0] - o2[0];
+                }
+            }
+        });
+        List<int[]> result = new ArrayList<int[]>();
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        for(int i=1;i<intervals.length;i++){
+            if(intervals[i][0] <= end){
+                end = Math.max(end, intervals[i][1]);
+            }else {
+                result.add(new int[]{start, end});
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+        }
+        result.add(new int[]{start, end});
+        int[][] res = new int[result.size()][2];
+        for(int i=0;i<result.size();i++){
+            res[i][0] = result.get(i)[0];
+            res[i][1] = result.get(i)[1];
+        }
+        return res;
+    }
+
+    //按end排序
+    public static int[][] merge3(int[][] intervals) {
+        if(intervals.length <= 1)
+            return intervals;
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[1] == o2[1]){
+                    return o1[0] - o2[0];
+                }else {
+                    return o1[1] - o2[1];
+                }
+            }
+        });
+        List<int[]> result = new ArrayList<>();
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        int x_end = intervals[0][1];
+        for(int i=1;i<intervals.length;i++){
+            if(intervals[i][0] <= x_end){
+                start = Math.min(start, intervals[i][0]);
+                end = Math.max(end, intervals[i][1]);
+            }else {
+                result.add(new int[]{start, end});
+                x_end = intervals[i][1];
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+        }
+        result.add(new int[]{start, end});
+        int[][] res = new int[result.size()][2];
+        for(int i=0;i<result.size();i++){
+            res[i][0] = result.get(i)[0];
+            res[i][1] = result.get(i)[1];
+        }
+        return res;
+
     }
 
 }
