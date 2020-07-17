@@ -15,6 +15,9 @@ package com.jp.LeetCode.question;
 //The given array size will in the range [2, 10000].
 //The given array's numbers won't have any order.
 
+import java.util.Arrays;
+import java.util.Map;
+
 //寻找丢失和重复的数
 public class Q645_SetMismatch {
 
@@ -40,11 +43,36 @@ public class Q645_SetMismatch {
     }
 
     public static void test(int[] nums,int[] expected){
-        int[] result = findErrorNums(nums);
+        int[] nums1 = Arrays.copyOf(nums, nums.length);
+        int[] result = findErrorNums(nums1);
         System.out.println(result[0]==expected[0]&&result[1]==expected[1]);
+        nums1 = Arrays.copyOf(nums, nums.length);
+        result = findErrorNums2(nums1);
+        System.out.println(result[0]==expected[0]&&result[1]==expected[1]);
+        System.out.println("===");
     }
 
     public static void main(String[] args) {
         test(new int[]{1,2,2,4},new int[]{2,3});
+    }
+
+
+    public static int[] findErrorNums2(int[] nums) {
+        int dup = 0, missing = 0;
+        for(int i=0;i<nums.length;i++){
+            int index = Math.abs(nums[i]) - 1;
+            if(nums[index] < 0){
+                dup = index + 1;
+            } else {
+                nums[index] = -nums[index];
+            }
+        }
+        for (int i=0;i<nums.length;i++){
+            if(nums[i] > 0){
+                missing = i+1;
+                break;
+            }
+        }
+        return new int[]{dup, missing};
     }
 }

@@ -45,19 +45,19 @@ public class Q25_ReverseNodesinkGroup {
 
     //链表的头尾节点分别为a、b
     //返回反转链表的新头节点，应该是b
-    public static ListNode reverse(ListNode a,ListNode b){
-        ListNode pre = null;
-        ListNode cur = a;
-        ListNode next = a;
-        //pre为已经反转连接好的最后一个节点
-        while (cur!=b){
-            next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
+        public static ListNode reverse(ListNode a,ListNode b){
+            ListNode pre = null;
+            ListNode cur = a;
+            ListNode next = a;
+            //pre为已经反转连接好的最后一个节点
+            while (cur!=b){
+                next = cur.next;
+                cur.next = pre;
+                pre = cur;
+                cur = next;
+            }
+            return pre;
         }
-        return pre;
-    }
 
 
     public static ListNode reverseKGroup2(ListNode head, int k){
@@ -85,15 +85,87 @@ public class Q25_ReverseNodesinkGroup {
         System.out.println(data.toString());
         ListNode newHead = reverseKGroup(list,k);
         System.out.println(newHead.toString());
-        //
+        System.out.println("====");
         list = new ListNode(data);
         newHead = reverseKGroup2(list,k);
         System.out.println(newHead.toString());
+        System.out.println("====");
+        list = new ListNode(data);
+        newHead = reverseKGroup3(list,k);
+        System.out.println(newHead.toString());
+        System.out.println("====");
+        list = new ListNode(data);
+        newHead = reverseKGroup4(list,k);
+        System.out.println(newHead.toString());
+        System.out.println("====");
     }
 
     public static void main(String[] args) {
         test(Arrays.asList(1,2,3,4,5),2);
-        System.out.println("====");
         test(Arrays.asList(1,2),2);
     }
+
+
+    public static ListNode reverseKGroup3(ListNode head, int k) {
+        if(head == null){
+            return null;
+        }
+        ListNode start = head;
+        ListNode end = head;
+        for(int i=0;i<k;i++){
+            if(end == null){
+                return start;
+            }
+            end = end.next;
+        }
+        ListNode newHead = reverse3(start, end);
+        start.next = reverseKGroup3(end, k);
+        return newHead;
+
+    }
+
+    //node1：包含
+    //node2：不包含
+    public static ListNode reverse3(ListNode node1, ListNode node2){
+        ListNode pre = null;
+        ListNode p = node1;
+        ListNode next = node1;
+        while (p != node2){
+            next = p.next;
+            p.next = pre;
+            pre = p;
+            p = next;
+        }
+        return pre;
+    }
+
+
+    public static ListNode reverseKGroup4(ListNode head, int k) {
+        ListNode start = head;
+        ListNode end = head;
+        for(int i=0;i<k;i++){
+            if(end == null){
+                return start;
+            }
+            end = end.next;
+        }
+        ListNode newHead = reverse4(head, end);
+        head.next = reverseKGroup4(end, k);
+        return newHead;
+    }
+
+
+    public static ListNode reverse4(ListNode head, ListNode end){
+        ListNode curr = head;
+        ListNode pre = null;
+        ListNode next = head.next;
+        while (curr != end){
+            next = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = next;
+        }
+        return pre;
+    }
 }
+

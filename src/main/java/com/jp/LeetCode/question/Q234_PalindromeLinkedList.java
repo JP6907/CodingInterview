@@ -14,6 +14,8 @@ package com.jp.LeetCode.question;
 
 import com.jp.LeetCode.datastruct.ListNode;
 
+import java.util.List;
+
 //判断是否为回文链表
 public class Q234_PalindromeLinkedList {
 
@@ -88,7 +90,11 @@ public class Q234_PalindromeLinkedList {
     public void test(int[] data,boolean expected){
         ListNode head = new ListNode(data);
         System.out.println(isPalindrome(head)==expected);
+        head = new ListNode(data);
         System.out.println(isPalindrome2(head)==expected);
+        head = new ListNode(data);
+        System.out.println(isPalindrome3(head)==expected);
+        System.out.println("===");
     }
 
 
@@ -98,5 +104,48 @@ public class Q234_PalindromeLinkedList {
         q.test(new int[]{1,2,2,1},true);
         q.test(new int[]{1,0,0},false);
         q.test(new int[]{1},true);
+    }
+
+    public static boolean isPalindrome3(ListNode head) {
+        //寻找中点
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //偶数：slow指向第n/2个
+        if(fast == null) {
+
+        }else { //奇数：slow指向中点
+            slow = slow.next;
+        }
+        //反转后半段
+        ListNode head2 = reverse3(slow, null);
+        //比较
+        ListNode p1 = head;
+        ListNode p2 = head2;
+        while (p2 != null){
+            if(p1.val != p2.val){
+                return false;
+            }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return true;
+    }
+
+    //不包含 tail
+    public static ListNode reverse3(ListNode head, ListNode tail){
+        ListNode pre = null;
+        ListNode curr = head;
+        ListNode next;
+        while (curr != tail){
+            next = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = next;
+        }
+        return pre;
     }
 }
