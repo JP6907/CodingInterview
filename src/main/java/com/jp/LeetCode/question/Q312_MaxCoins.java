@@ -3,6 +3,7 @@ package com.jp.LeetCode.question;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zjp
@@ -29,9 +30,11 @@ public class Q312_MaxCoins {
             return nums[0];
         }
         boolean[] flag = new boolean[len];
-        return maxCoinsCore(nums, flag, 0, nums.length-1, 0, 0);
+        maxCoinsCore(nums, flag, 0, nums.length-1, 0, 0);
+        return result;
     }
 
+    static int result = 0;
     public static int maxCoinsCore(int[] nums, boolean[] flag, int begin, int end, int currCoins, int count) {
         if(count == nums.length){
             return currCoins;
