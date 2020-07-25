@@ -10,30 +10,27 @@ import java.util.Random;
 public class QuickSortTest {
 
     static int Partition(int[] data,int low,int high){
-        int index = (int)(Math.random()*(high-low)+low);
-        int pivot = data[index];
-        data[index] = data[low];
-        data[low] = pivot;
-        while(low<high){
-            while(low<high && data[high]>=pivot)
+        int val = data[low];
+        while (low < high){
+            while (low < high && data[high] >= val){
                 high--;
+            }
             data[low] = data[high];
-            while(low<high && data[low]<= pivot)
+            while (low < high && data[low] <= val){
                 low++;
+            }
             data[high] = data[low];
         }
-        data[low] = pivot;
+        data[low] = val;
         return low;
     }
 
     static void QuickSort(int[] data,int start,int end){
-        if(start==end)
-            return;
-        int index = Partition(data,start,end);
-        if(index>start)
-            QuickSort(data,start,index-1);
-        if(index<end)
-            QuickSort(data,index+1,end);
+        if(start < end){
+            int pivot = Partition(data, start, end);
+            QuickSort(data, start, pivot-1);
+            QuickSort(data, pivot+1, end);
+        }
     }
 
     public static void main(String[] args){

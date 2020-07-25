@@ -20,19 +20,45 @@ public class LRUCache {
         this.capacity = capacity;
     }
 
-    public int get(int key){
-        return 0;
+    public int get(int key) {
+        if(!map.containsKey(key)){
+            return -1;
+        } else {
+            int val = map.get(key).val;
+            //数据提前
+            put(key, val);
+            return val;
+        }
     }
 
     public void put(int key, int val){
+        Node node = new Node(key, val);
+        //节点是否存在
+        //不存在，是否已满
+        if(map.containsKey(key)){
+            //删除旧节点，新节点插入头部
+            cache.remove(map.get(key));
+            map.remove(key);
+            cache.addFirst(node);
+            map.put(key, node);
+        } else {
+            //满了，删除尾部节点，新节点插入头部
+            if(cache.size() == capacity) {
+                Node last = cache.getLast();
+                map.remove(last.getKey());
+                cache.remove(last);
+            }
+            map.put(key, node);
+            cache.addFirst(node);
+        }
 
     }
 
     private class Node{
         private int key;
-        private String val;
+        private int val;
 
-        public Node(int key, String val) {
+        public Node(int key, int val) {
             this.key = key;
             this.val = val;
         }
@@ -41,7 +67,7 @@ public class LRUCache {
             return key;
         }
 
-        public String getVal() {
+        public int getVal() {
             return val;
         }
 

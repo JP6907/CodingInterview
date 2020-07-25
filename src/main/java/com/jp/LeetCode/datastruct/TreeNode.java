@@ -1,6 +1,10 @@
 package com.jp.LeetCode.datastruct;
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 public class TreeNode {
     public int key;
     public TreeNode lchild;
@@ -127,12 +131,103 @@ public class TreeNode {
         }
     }
 
+    public static void visit(TreeNode node){
+        System.out.print(node.val + "  ");
+    }
+
+    public static void PreOrderTraversal(TreeNode root){
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode p = root;
+        while (p != null || !stack.empty()){
+            while (p != null){
+                visit(p);
+                stack.push(p);
+                p = p.left;
+            }
+            if(!stack.empty()){
+                p = stack.pop();
+                p = p.right;
+            }
+        }
+        System.out.println("-------------");
+    }
+
+    public static void InOrderTraversal(TreeNode root){
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode p = root;
+        while (p!= null || !stack.empty()){
+            while (p != null){
+                stack.push(p);
+                p = p.left;
+            }
+            if(!stack.empty()){
+                p = stack.pop();
+                visit(p);
+                p = p.right;
+            }
+        }
+        System.out.println("-------------");
+    }
+
+    public static void PostOrderTraversal(TreeNode root){
+        class MarkNode{
+            public TreeNode node;
+            public int mark;
+
+            public MarkNode(TreeNode node, int mark) {
+                this.node = node;
+                this.mark = mark;
+            }
+        }
+        Stack<MarkNode> stack = new Stack<>();
+        TreeNode p = root;
+        while (p != null || !stack.empty()){
+            while (p != null){
+                stack.push(new MarkNode(p, 1));
+                p = p.left;
+            }
+            if(!stack.empty()){
+                MarkNode mn = stack.pop();
+                if(mn.mark == 1){
+                    mn.mark = 2;
+                    stack.push(mn);
+                    p = mn.node.right;
+                } else {
+                    visit(mn.node);
+                    p = null;
+                }
+            }
+        }
+        System.out.println("-------------");
+    }
+
+    public static void LevelOrderTraversal(TreeNode root){
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        TreeNode p = root;
+        while (!queue.isEmpty()){
+            p = queue.poll();
+            visit(p);
+            if(p.left != null){
+                queue.add(p.left);
+            }
+            if(p.right != null){
+                queue.add(p.right);
+            }
+        }
+    }
+
 
     public static void main(String[] args){
         TreeNode node123 = new TreeNode(1,2,3);
         TreeNode node456 = new TreeNode(4,5,6);
         TreeNode root = new TreeNode(0,node123,node456);
-        TreeNode.PrintTree(root);
+        //TreeNode.PrintTree(root);
+
+        PreOrderTraversal(root);
+        InOrderTraversal(root);
+        PostOrderTraversal(root);
+        LevelOrderTraversal(root);
 
         System.out.println("=============");
     }
