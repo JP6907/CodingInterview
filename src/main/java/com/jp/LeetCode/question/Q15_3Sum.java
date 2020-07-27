@@ -57,11 +57,68 @@ public class Q15_3Sum {
         for(List<Integer> l : result){
             System.out.println(l.toString());
         }
+        System.out.println("--");
+        result = threeSum2(nums);
+        for(List<Integer> l : result){
+            System.out.println(l.toString());
+        }
         System.out.println("===");
     }
 
     public static void main(String[] args) {
         Test(new int[]{-1, 0, 1, 2, -1, -4});
         Test(new int[]{-2,0,0,2,2});
+    }
+
+    public static List<List<Integer>> threeSum2(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        int len = nums.length;
+        if(len < 3){
+            return result;
+        }
+        Arrays.sort(nums);
+        for(int i = 0; i < len - 2; i++){
+            while (i> 0 && i < len - 2 && nums[i-1] == nums[i]){
+                i++;
+            }
+            List<ArrayList<Integer>> pair = twoSum2(nums, i + 1, len - 1, 0 - nums[i]);
+            for(List<Integer> p : pair){
+                p.add(nums[i]);
+                result.add(p);
+            }
+        }
+        return result;
+    }
+
+    public static List<ArrayList<Integer>> twoSum2(int[] nums, int left, int right, int target){
+        List<ArrayList<Integer>> result = new ArrayList<>();
+        while (left < right){
+            int sum = nums[left] + nums[right];
+            if(sum == target){
+                ArrayList<Integer> pair = new ArrayList<>();
+                pair.add(nums[left]);
+                pair.add(nums[right]);
+                result.add(pair);
+                left++;
+                right--;
+                while (left < right && nums[left - 1] == nums[left]){
+                    left++;
+                }
+                while (left < right && nums[right + 1] == nums[right]){
+                    right--;
+                }
+            } else if(sum < target){
+                left++;
+                while (left < right && nums[left - 1] == nums[left]){
+                    left++;
+                }
+            } else {
+                right--;
+                while (left < right && nums[right + 1] == nums[right]){
+                    right--;
+                }
+            }
+        }
+        return result;
     }
 }

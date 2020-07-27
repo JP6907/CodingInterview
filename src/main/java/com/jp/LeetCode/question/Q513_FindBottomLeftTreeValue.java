@@ -44,15 +44,27 @@ public class Q513_FindBottomLeftTreeValue {
 
     int maxLevel = -1;
     int target = 0;
-    public void dfs(TreeNode root,int currLevel){
-        if(root!=null){
-            if(currLevel>maxLevel){
+//    public void dfs(TreeNode root,int currLevel){
+//        if(root!=null){
+//            if(currLevel>maxLevel){
+//                target = root.val;
+//                maxLevel = currLevel;
+//            }
+//            currLevel++;
+//            dfs(root.left,currLevel);
+//            dfs(root.right,currLevel);
+//        }
+//    }
+
+    public void dfs(TreeNode root, int currLevel){
+        if(root != null){
+            if(currLevel > maxLevel){
                 target = root.val;
                 maxLevel = currLevel;
             }
             currLevel++;
-            dfs(root.left,currLevel);
-            dfs(root.right,currLevel);
+            dfs(root.left, currLevel);
+            dfs(root.right, currLevel);
         }
     }
 

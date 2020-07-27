@@ -54,11 +54,49 @@ public class Q102_BinaryTreeLevelOrderTraversal {
         return result;
     }
 
+    public static List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int currCount = 1;
+        int nextCount = 0;
+        TreeNode p;
+        List<Integer> list = new ArrayList<>();
+        while (!queue.isEmpty()){
+            p = queue.poll();
+            list.add(p.val);
+            if(p.left != null){
+                queue.add(p.left);
+                nextCount++;
+            }
+            if(p.right != null){
+                queue.add(p.right);
+                nextCount++;
+            }
+            if(--currCount == 0){
+                currCount = nextCount;
+                nextCount = 0;
+                result.add(new ArrayList<>(list));
+                list.clear();
+            }
+        }
+        return result;
+    }
+
     public static void Test(TreeNode root){
         List<List<Integer>> result = levelOrder(root);
         for(List<Integer> list : result){
             System.out.println(Arrays.toString(list.toArray()));
         }
+        System.out.println("---");
+        result = levelOrder2(root);
+        for(List<Integer> list : result){
+            System.out.println(Arrays.toString(list.toArray()));
+        }
+        System.out.println("======");
     }
 
     public static void main(String[] args) {
