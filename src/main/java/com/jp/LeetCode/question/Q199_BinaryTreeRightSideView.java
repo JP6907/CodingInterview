@@ -49,4 +49,33 @@ public class Q199_BinaryTreeRightSideView {
         }
         return result;
     }
+
+    public List<Integer> rightSideView2(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        int currCount = 1;
+        int nextCount = 0;
+        queue.add(root);
+        TreeNode p = null;
+        while (!queue.isEmpty()){
+            p = queue.poll();
+            if(p.left != null){
+                queue.add(p.left);
+                nextCount++;
+            }
+            if(p.right != null){
+                queue.add(p.right);
+                nextCount++;
+            }
+            if(--currCount == 0){
+                result.add(p.val);
+                currCount = nextCount;
+                nextCount = 0;
+            }
+        }
+        return result;
+    }
 }

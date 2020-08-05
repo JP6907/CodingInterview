@@ -16,7 +16,9 @@ package com.jp.LeetCode.question;
 //Note:
 //You may assume that you have an infinite number of each kind of coin.
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 //https://github.com/labuladong/fucking-algorithm/blob/master/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%B3%BB%E5%88%97/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%AF%A6%E8%A7%A3%E8%BF%9B%E9%98%B6.md
 //兑换零钱问题，硬币数量无限，用最少的硬币组合成目标值
@@ -73,6 +75,9 @@ public class Q322_CoinChange {
         System.out.println(coinChange2(coins,amount)==expeccted);
         System.out.println(coinChange3(coins,amount)==expeccted);
         System.out.println(coinChange4(coins,amount)==expeccted);
+        System.out.println(coinChange5(coins,amount)==expeccted);
+        System.out.println(coinChange6(coins,amount)==expeccted);
+        System.out.println("=====");
     }
 
     public static void main(String[] args) {
@@ -129,6 +134,53 @@ public class Q322_CoinChange {
                 }
             }
             dp[i] = result;
+        }
+        return dp[amount]==Integer.MAX_VALUE?-1:dp[amount];
+    }
+
+    //dp[n] = Min(dp[k] + 1)
+    public static int coinChange5(int[] coins, int amount) {
+        int[] memo = new int[amount+1];
+        Arrays.fill(memo, -1);
+        int result = coinChangeCore5(coins, amount, memo);
+        return result == Integer.MAX_VALUE?-1:result;
+    }
+
+    public static int coinChangeCore5(int[] coins, int amount, int[] memo) {
+        if(amount < 0){
+            return Integer.MAX_VALUE;
+        }
+        if(amount == 0){
+            return 0;
+        }
+        if(memo[amount] != -1){
+            return memo[amount];
+        }
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<coins.length;i++){
+            int curAmount = amount - coins[i];
+            if(curAmount >= 0) {
+                int count = coinChangeCore5(coins, curAmount, memo);
+                if(count != Integer.MAX_VALUE){
+                    min = Math.min(min, count) + 1;
+                }
+            }
+        }
+        memo[amount] = min;
+        return min;
+    }
+
+    public static int coinChange6(int[] coins, int amount){
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for(int i=1;i<=amount;i++){
+            for(int j=0;j<coins.length;j++){
+                int temp = i-coins[j];
+                if(temp>=0&&dp[temp]!=Integer.MAX_VALUE){
+                    dp[i] = Math.min(dp[i], dp[temp])+1;
+                }
+            }
         }
         return dp[amount]==Integer.MAX_VALUE?-1:dp[amount];
     }

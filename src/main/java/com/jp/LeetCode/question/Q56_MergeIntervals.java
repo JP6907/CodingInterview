@@ -58,6 +58,11 @@ public class Q56_MergeIntervals {
             System.out.println(Arrays.toString(r));
         }
         System.out.println("========");
+        result = merge4(intervals);
+        for(int[] r : result){
+            System.out.println(Arrays.toString(r));
+        }
+        System.out.println("========");
     }
 
     public static void main(String[] args) {
@@ -137,6 +142,40 @@ public class Q56_MergeIntervals {
         }
         return res;
 
+    }
+
+    public static int[][] merge4(int[][] intervals) {
+        if(intervals.length < 2){
+            return intervals;
+        }
+        Arrays.sort(intervals, new Comparator<int[]>(){
+            public int compare(int[] o1, int[] o2){
+                if(o1[0] == o2[0]){
+                    return o1[1] - o2[1];
+                } else {
+                    return o1[0] - o2[0];
+                }
+            }
+        });
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        List<int[]> resultList = new ArrayList<>();
+        for(int i=1;i<intervals.length;i++){
+            if(intervals[i][0] <= end){
+                end = Math.max(intervals[i][1], end);
+            } else {
+                resultList.add(new int[]{start, end});
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+        }
+        resultList.add(new int[]{start, end});
+        int[][] result = new int[resultList.size()][2];
+        for(int i=0;i<resultList.size();i++){
+            result[i][0] = resultList.get(i)[0];
+            result[i][1] = resultList.get(i)[1];
+        }
+        return result;
     }
 
 }

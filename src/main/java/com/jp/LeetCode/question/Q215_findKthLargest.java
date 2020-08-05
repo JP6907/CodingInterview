@@ -9,7 +9,14 @@ import java.util.PriorityQueue;
  **/
 public class Q215_findKthLargest {
 
-    public int findKthLargest(int[] nums, int k) {
+    public static int findKthLargest(int[] nums, int k) {
+        int len = nums.length;
+        if(len == 0){
+            return -1;
+        }
+        if(len == 1){
+            return nums[0];
+        }
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         for(int i=0;i<nums.length;i++){
             if(heap.size() == k){
@@ -24,13 +31,21 @@ public class Q215_findKthLargest {
         return heap.peek();
     }
 
-    public int findKthLargest2(int[] nums, int k) {
+    public static int findKthLargest2(int[] nums, int k) {
+        int len = nums.length;
+        if(len == 0){
+            return -1;
+        }
+        if(len == 1){
+            return nums[0];
+        }
         int left = 0, right = nums.length-1;
-        while (left < right){
+        int targetIndex = len - k;
+        while (left <= right){
             int index = partition(nums, left, right);
-            if(index == k-1){
+            if(index == targetIndex){
                 return nums[index];
-            } else if(index < k-1){
+            } else if(index < targetIndex){
                 left = index + 1;
             } else {
                 right = index - 1;
@@ -39,7 +54,7 @@ public class Q215_findKthLargest {
         return  -1;
     }
 
-    public int partition(int[] nums, int left, int right){
+    public static int partition(int[] nums, int left, int right){
         int pivot = nums[left];
         while (left < right){
             while (left < right && nums[right] >= pivot){
@@ -55,11 +70,20 @@ public class Q215_findKthLargest {
         return left;
     }
 
+    public static void test(int[] nums, int k, int expectded){
+        System.out.println(findKthLargest(nums, k) == expectded);
+        System.out.println(findKthLargest2(nums, k) == expectded);
+        System.out.println("===");
+    }
+
     public static void main(String[] args) {
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
-        heap.add(1);
-        heap.add(2);
-        System.out.println(heap.peek());
+//        PriorityQueue<Integer> heap = new PriorityQueue<>();
+//        heap.add(1);
+//        heap.add(2);
+//        System.out.println(heap.peek());
+        test(new int[]{3,2,1,5,6,4}, 2, 5);
+        test(new int[]{1}, 1, 1);
+        test(new int[]{2, 1}, 2, 1);
     }
 
 }

@@ -2,6 +2,7 @@ package com.jp.LeetCode.question;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 //Given a string, find the length of the longest substring without repeating characters.
 //
@@ -82,6 +83,7 @@ public class Q3_LongestSubstringWithoutRepeatingCharacters {
         System.out.println(lengthOfLongestSubstring(str)==expected);
         System.out.println(lengthOfLongestSubstring2(str)==expected);
         System.out.println(lengthOfLongestSubstring3(str)==expected);
+        System.out.println(lengthOfLongestSubstring4(str)==expected);
     }
 
     public static void main(String[] args) {
@@ -104,6 +106,26 @@ public class Q3_LongestSubstringWithoutRepeatingCharacters {
                 windows.put(lc, windows.get(lc)-1);
             }
             result = Math.max(result, right-left);
+        }
+        return result;
+    }
+
+    public static int lengthOfLongestSubstring4(String s) {
+        int len = s.length();
+        if(len < 2){
+            return len;
+        }
+        Map<Character, Integer> window = new HashMap<>();
+        int left = 0, right = 0;
+        int result = 0;
+        while (right < len){
+            char c = s.charAt(right++);
+            window.merge(c, 1, (oldValue, newValue) -> oldValue + 1);
+            while (window.getOrDefault(c, 0) > 1){
+                char lc = s.charAt(left++);
+                window.put(lc, window.get(lc) - 1);
+            }
+            result = Math.max(result, right - left);
         }
         return result;
     }

@@ -36,4 +36,26 @@ public class Q113_PathSumII {
             currPath.remove(currPath.size()-1);
         }
     }
+
+    public List<List<Integer>> pathSum2(TreeNode root, int sum){
+        List<List<Integer>> result = new ArrayList<>();
+        pathSumCOre2(root, sum, new ArrayList<>(), result);
+        return result;
+    }
+
+    public void pathSumCOre2(TreeNode root, int curr, List<Integer> currPath, List<List<Integer>> result){
+        if(root != null) {
+            curr -= root.val;
+            if(root.left == null && root.right == null){
+                if(curr == 0) {
+                    currPath.add(root.val);
+                    result.add(currPath);
+                }
+            } else {
+                currPath.add(root.val);
+                pathSumCOre2(root.left, curr, new ArrayList<>(currPath), result);
+                pathSumCOre2(root.right, curr, new ArrayList<>(currPath), result);
+            }
+        }
+    }
 }

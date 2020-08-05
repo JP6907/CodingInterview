@@ -25,4 +25,22 @@ public class Q101_SymmetricTree {
         else
             return isSymmetricCore(node1.left,node2.right)&&isSymmetricCore(node1.right,node2.left);
     }
+
+    public boolean isSymmetric2(TreeNode root) {
+        return isSymmetricCore2(root, root);
+    }
+
+    public boolean isSymmetricCore2(TreeNode root1, TreeNode root2) {
+        if(root1 == null && root2 == null){
+            return true;
+        } else if(root1 == null && root2 != null){
+            return false;
+        } else if(root1 != null && root2 == null){
+            return false;
+        } else if(root1.val != root2.val){
+            return false;
+        } else {
+            return isSymmetricCore2(root1.left, root2.right) && isSymmetricCore2(root1.right, root2.left);
+        }
+    }
 }

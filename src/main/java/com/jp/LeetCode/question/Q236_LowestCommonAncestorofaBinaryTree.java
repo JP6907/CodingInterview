@@ -4,6 +4,8 @@ package com.jp.LeetCode.question;
 
 import com.jp.LeetCode.datastruct.TreeNode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Q236_LowestCommonAncestorofaBinaryTree {
@@ -51,11 +53,58 @@ public class Q236_LowestCommonAncestorofaBinaryTree {
 
     public static void test(TreeNode root,TreeNode p,TreeNode q,TreeNode expected){
         System.out.println(lowestCommonAncestor(root,p,q)==expected);
+        System.out.println(lowestCommonAncestor2(root,p,q)==expected);
     }
 
     public static void main(String[] args) {
         TreeNode node2 = new TreeNode(2,null,null);
         TreeNode root = new TreeNode(1,node2,null);
         test(root,node2,root,root);
+    }
+
+    public static TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || p == null || q == null){
+            return null;
+        }
+        Stack<TreeNode> pPath = new Stack<>();
+        Stack<TreeNode> qPath = new Stack<>();
+        getPath2(root, p, pPath);
+        getPath2(root, q, qPath);
+        int lenp = pPath.size();
+        int lenq = qPath.size();
+        while (lenp > lenq){
+            pPath.pop();
+            lenp--;
+        }
+        while (lenq > lenp){
+            qPath.pop();
+            lenq--;
+        }
+        while (!pPath.empty() && !qPath.empty()){
+            if(pPath.peek() == qPath.peek()){
+                return pPath.peek();
+            }
+            pPath.pop();
+            qPath.pop();
+        }
+        return null;
+
+    }
+
+    public static boolean getPath2(TreeNode root, TreeNode target, Stack<TreeNode> path){
+        if(root == null){
+            return false;
+        }
+        path.push(root);
+        if(root == target){
+            return true;
+        }
+        boolean result = getPath2(root.left, target, path) || getPath2(root.right, target, path);
+        if(result){
+            return true;
+        } else {
+            path.pop();
+            return false;
+        }
     }
 }

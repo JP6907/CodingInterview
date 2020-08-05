@@ -19,6 +19,7 @@ package com.jp.LeetCode.question;
 //You may not alter the values in the list's nodes, only nodes itself may be changed.
 
 import com.jp.LeetCode.datastruct.ListNode;
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
 
 import java.util.Arrays;
 import java.util.List;
@@ -82,7 +83,7 @@ public class Q25_ReverseNodesinkGroup {
 
     public static void test(List<Integer> data,int k){
         ListNode list = new ListNode(data);
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         ListNode newHead = reverseKGroup(list,k);
         System.out.println(newHead.toString());
         System.out.println("====");
@@ -98,6 +99,11 @@ public class Q25_ReverseNodesinkGroup {
         newHead = reverseKGroup4(list,k);
         System.out.println(newHead.toString());
         System.out.println("====");
+        list = new ListNode(data);
+        newHead = reverseKGroup5(list,k);
+        System.out.println(newHead.toString());
+        System.out.println("====");
+        System.out.println("====================");
     }
 
     public static void main(String[] args) {
@@ -166,6 +172,34 @@ public class Q25_ReverseNodesinkGroup {
             curr = next;
         }
         return pre;
+    }
+
+
+    public static ListNode reverse5(ListNode head, ListNode end){
+        ListNode curr = head;
+        ListNode next = curr.next;
+        ListNode pre = null;
+        while (curr != end){
+            next = curr.next;
+            curr.next = pre;
+            pre = curr;
+            curr = next;
+        }
+        return pre;
+    }
+
+    public static ListNode reverseKGroup5(ListNode head, int k){
+        ListNode start = head;
+        ListNode end = head;
+        for(int i=0;i<k;i++){
+            if(end == null){
+                return start;
+            }
+            end = end.next;
+        }
+        ListNode newHead = reverse4(head, end);
+        head.next = reverseKGroup4(end, k);
+        return newHead;
     }
 }
 
