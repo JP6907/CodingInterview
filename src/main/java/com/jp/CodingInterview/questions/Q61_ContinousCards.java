@@ -4,6 +4,7 @@ package com.jp.CodingInterview.questions;
 // 题目：从扑克牌中随机抽5张牌，判断是不是一个顺子，即这5张牌是不是连续的。
 // 2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王可以看成任意数字。
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Q61_ContinousCards {
@@ -31,18 +32,47 @@ public class Q61_ContinousCards {
         return zeroCount>=gapCount;
     }
 
+    public static void test(int[] data, boolean expected){
+        System.out.println(IsContinuous(data) == expected);
+        System.out.println(isStraight(data) == expected);
+        System.out.println("===");
+    }
+
     public static void main(String[] args){
-        assert IsContinuous(new int[]{ 1, 3, 2, 5, 4 }) == true;
-        System.out.println(IsContinuous(new int[]{ 1, 3, 2, 5, 4 }));
-        assert IsContinuous(new int[]{ 1, 3, 2, 6, 4 }) == false;
-        System.out.println(IsContinuous(new int[]{ 1, 3, 2, 6, 4 }));
-        assert IsContinuous(new int[]{ 0, 3, 2, 6, 4 }) == true;
-        System.out.println(IsContinuous(new int[]{ 0, 3, 2, 6, 4 }));
-        assert IsContinuous(new int[]{ 0, 3, 1, 6, 4 }) == false;
-        System.out.println(IsContinuous(new int[]{ 0, 3, 1, 6, 4 }));
-        assert IsContinuous(new int[]{ 1, 3, 0, 5, 0 }) == true;
-        System.out.println(IsContinuous(new int[]{ 1, 3, 0, 5, 0 }));
-        assert IsContinuous(new int[]{ 1, 3, 0, 7, 0 }) == false;
-        System.out.println(IsContinuous(new int[]{ 1, 3, 0, 7, 0 }));
+        test(new int[]{ 1, 3, 2, 5, 4 }, true);
+        test(new int[]{ 1, 3, 2, 6, 4 }, false);
+        test(new int[]{ 0, 3, 2, 6, 4 }, true);
+        test(new int[]{ 0, 3, 1, 6, 4 }, false);
+        test(new int[]{ 1, 3, 0, 5, 0 }, true);
+        test(new int[]{ 1, 3, 0, 7, 0 }, false);
+    }
+
+    public static boolean isStraight(int[] nums) {
+        if(nums.length < 2){
+            return true;
+        }
+        //排序
+        Arrays.sort(nums);
+        //计算0的数量
+        int zeroCount = 0;
+        int nonZeroIndex = 0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=0){
+                nonZeroIndex = i;
+                break;
+            }
+            zeroCount++;
+        }
+        //计算空缺数量
+        int gapCount = 0;
+        for(int i=nonZeroIndex+1;i<nums.length;i++){
+            if(nums[i] == nums[i-1]){
+                return false;
+            }
+            if(nums[i] != nums[i-1]+1){
+                gapCount += (nums[i] - nums[i-1] - 1);
+            }
+        }
+        return zeroCount >= gapCount;
     }
 }

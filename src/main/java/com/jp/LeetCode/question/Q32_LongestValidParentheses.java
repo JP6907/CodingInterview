@@ -61,5 +61,24 @@ public class Q32_LongestValidParentheses {
         Test(")()())",4);
         Test("(",0);
     }
+
+    public static int longestValidParentheses2(String s) {
+        if(s == null || s.length() < 2){
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<>();
+        int max = 0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='('){
+                stack.push(i);
+            } else {
+                if(!stack.empty()){
+                    if(stack.peek() == '('){
+                        max = Math.max(max, i-stack.peek()+1);
+                    }
+                }
+            }
+        }
+    }
 }
 

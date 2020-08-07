@@ -68,6 +68,53 @@ public class Q23_MergekSortedLists {
         lists[2] = new ListNode(Arrays.asList(2,6));
         ListNode result = mergeKLists(lists);
         System.out.println(result.toString());
+
+        lists = new ListNode[3];
+        lists[0] = new ListNode(Arrays.asList(1,4,5));
+        lists[1] = new ListNode(Arrays.asList(1,3,4));
+        lists[2] = new ListNode(Arrays.asList(2,6));
+        result = mergeKLists2(lists);
+        System.out.println(result.toString());
+    }
+
+    public static ListNode mergeKLists2(ListNode[] lists) {
+        if(lists == null){
+            return null;
+        }
+        if(lists.length == 1){
+            return lists[0];
+        }
+        ListNode[] curr = new ListNode[lists.length];
+        for(int i=0;i<lists.length;i++){
+            curr[i] = lists[i];
+        }
+        ListNode head = null;
+        ListNode p = null;
+        while (true){
+            int minIndex = -1;
+            int minVal = Integer.MAX_VALUE;
+            for (int i=0;i<lists.length;i++){
+                if(curr[i] != null){
+                    if(curr[i].val < minVal){
+                        minVal = curr[i].val;
+                        minIndex = i;
+                    }
+                }
+            }
+            if(minIndex == -1){
+                break;
+            }
+            if(head == null){
+                head = curr[minIndex];
+                p = head;
+                curr[minIndex] = curr[minIndex].next;
+            } else {
+                p.next = curr[minIndex];
+                p = p.next;
+                curr[minIndex] = curr[minIndex].next;
+            }
+        }
+        return head;
     }
 
 }

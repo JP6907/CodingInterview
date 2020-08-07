@@ -40,10 +40,34 @@ public class Q70_ClimbingStairs {
 
     public static void test(int n,int expected){
         System.out.println(climbStairs(n)==expected);
+        System.out.println(climbStairs2(n)==expected);
+        System.out.println(climbStairs3(n)==expected);
+        System.out.println("---");
     }
 
     public static void main(String[] args) {
         test(2,2);
         test(3,3);
+    }
+
+    public static int climbStairs2(int n) {
+        if(n <= 2){
+            return n;
+        }
+        return climbStairs2(n-1) + climbStairs2(n-2);
+    }
+
+    public static int climbStairs3(int n) {
+        if(n <= 2){
+            return n;
+        }
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i=3;i<=n;i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
     }
 }
